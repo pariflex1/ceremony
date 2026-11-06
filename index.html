@@ -31,7 +31,7 @@
 <link rel="image_src" href="https://raw.githubusercontent.com/pariflex1/ceremony/main/images/og%20(1).webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Great+Vibes&family=Jost:wght@400;500&family=Pinyon+Script&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Great+Vibes&family=Jost:wght@400;500&family=Pinyon+Script&family=Poppins:wght@600;700;800&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
 <style>
 :root{
   --red:#AB1800;--cream:#FFFAD9;--ease:cubic-bezier(.65,0,.2,1);
@@ -69,8 +69,19 @@ body{background:#1c0401;color:var(--red);font-family:var(--serif);overflow:hidde
   transform:perspective(900px) rotateX(calc(var(--ty,0)*-5deg)) rotateY(calc(var(--tx,0)*6deg));transition:transform .25s ease-out}
 
 /* ---------- slide 5: hotel theme (#8EBFF7) ---------- */
+
+/* ---------- slide 6: remove content box ---------- */
+.s6 .glass{background:transparent!important;border:none!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;padding:0 16px!important;width:calc(100% - 32px)}
+.s6 .glass::before,.s6 .glass::after{display:none!important}
+.s6 .place{color:#1c0401;font-size:clamp(30px,5vh,40px);text-shadow:0 1px 12px rgba(255,255,255,.9),0 2px 4px rgba(255,255,255,.9)}
+.s6 .sub{color:#3b0600;font-weight:600;text-shadow:0 1px 8px rgba(255,255,255,.85)}
+.s6 .label{color:#5c0a00;font-weight:600;letter-spacing:.3em;text-shadow:0 1px 8px rgba(255,255,255,.85)}
 .t-hotel{background:#8EBFF7;color:var(--red);--b1:#cbe5ff;--b2:#69b2f8;--b3:#ffffff}
 .t-hotel .glass{background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(255,255,255,.45));border:1px solid rgba(255,255,255,.9);box-shadow:0 20px 50px rgba(15,45,85,.18)}
+
+/* ---------- slide 7: image in front of content and box ---------- */
+.s7 .art,.s-close .art{z-index:10!important;pointer-events:none}
+.s7 .replay{position:relative;z-index:12}
 .t-hotel .art{opacity:0;transition:opacity 1.2s ease .4s}
 .t-hotel.on .art{opacity:1}
 .t-cream .glass,.t-white .glass{background:linear-gradient(145deg,rgba(255,255,255,.64),rgba(255,255,255,.2))}
@@ -91,7 +102,7 @@ body{background:#1c0401;color:var(--red);font-family:var(--serif);overflow:hidde
 .lead{font-family:var(--serif);font-weight:500;font-size:clamp(19px,2.9vh,23px);line-height:1.45;max-width:30ch}
 .script{font-family:var(--script);font-weight:400;line-height:1.08}
 .names{font-family:var(--names);font-size:min(clamp(46px,8.4vh,64px),12vw);line-height:1.05;background:linear-gradient(180deg,#fff7d6,#ffd9a0 70%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 8px rgba(60,5,0,.45))}
-.s1 .names,.s3 .names,.s-invite .names{font-family:"Alex Brush",var(--names);font-size:min(clamp(48px,8.2vh,66px),13vw);font-weight:400;line-height:1.12;background:linear-gradient(180deg,#FFB300 0%,#FF8F00 45%,#E65100 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#FF8F00;filter:drop-shadow(0 2px 5px rgba(171,24,0,.32));padding:2px 4px}
+.s1 .names,.s3 .names,.s-invite .names{font-family:"Great Vibes","Brush Script MT",cursive;font-size:min(clamp(52px,9vh,74px),14.5vw);font-weight:400;line-height:1.1;letter-spacing:.01em;background:linear-gradient(180deg,#FFB300 0%,#FF8F00 45%,#E65100 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#FF8F00;filter:drop-shadow(0 2px 6px rgba(171,24,0,.35));padding:2px 4px}
 .make-slide-btn{position:absolute;z-index:50;right:12px;bottom:calc(max(12px,env(safe-area-inset-bottom,0px)) + 8px);display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font:500 10.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:#FFFAD9;background:rgba(28,4,1,.75);border:1px solid rgba(255,250,217,.38);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 4px 14px rgba(0,0,0,.35);transition:transform .15s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease;cursor:pointer;pointer-events:auto}
 .make-slide-btn svg{width:14px;height:14px;fill:#25D366;flex:none}
 .make-slide-btn:hover{background:rgba(37,211,102,.25);border-color:rgba(37,211,102,.65);color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.45);transform:translateY(-1px)}
@@ -163,7 +174,7 @@ body{background:#1c0401;color:var(--red);font-family:var(--serif);overflow:hidde
 .open .e-letter{transform:translateY(-74%)}
 .e-letter .e-deva{font-family:var(--deva);font-size:clamp(11.5px,2.7vw,13.5px);font-weight:600;line-height:1.2;color:#c48b00;filter:drop-shadow(0 1px 2px rgba(171,24,0,.2))}
 .e-letter .e-bless{font:500 clamp(8.5px,2vw,10px)/1.2 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--red);opacity:.9}
-.e-letter .e-names{font-family:"Alex Brush",var(--names);font-size:clamp(32px,8vw,40px);font-weight:400;line-height:1.15;background:linear-gradient(180deg,#FFB300 0%,#FF8F00 45%,#E65100 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#FF8F00;filter:drop-shadow(0 2px 4px rgba(171,24,0,.3));padding:2px 4px}
+.e-letter .e-names{font-family:"Great Vibes","Brush Script MT",cursive;font-size:clamp(28px,7.5vw,38px);font-weight:400;line-height:1.1;letter-spacing:.01em;background:linear-gradient(180deg,#FFB300 0%,#FF8F00 45%,#E65100 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#FF8F00;filter:drop-shadow(0 2px 4px rgba(171,24,0,.3));padding:2px 4px}
 .e-letter .e-sub{font-family:var(--serif);font-style:italic;font-size:clamp(12px,2.8vw,14px);color:var(--red);opacity:.9}
 .e-letter .e-orn{width:clamp(60px,15vw,80px);height:auto;opacity:.85;color:#d4a017}
 .e-pocket{position:absolute;inset:0;z-index:3;pointer-events:none}
@@ -203,8 +214,8 @@ body{background:#1c0401;color:var(--red);font-family:var(--serif);overflow:hidde
 .ganesh-line1{font-family:var(--deva);font-weight:600;font-size:clamp(19px,3.1vh,25px);line-height:1.2;background:linear-gradient(180deg,#FFF85B 0%,#FFDE00 40%,#FFB800 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#FFD700;filter:drop-shadow(0 2px 8px rgba(0,0,0,.6))}
 .ganesh-line2{font-family:var(--deva);font-weight:400;font-size:clamp(11.5px,1.8vh,14.5px);line-height:1.45;color:#FFFAD9;text-shadow:0 1px 6px rgba(0,0,0,.7);max-width:38ch;opacity:.95}
 .s-invite{flex-direction:column;justify-content:center;gap:clamp(6px,1.3vh,14px)}
-.s-invite.has-art{padding-bottom:calc(min(100vw,480px)*.28)}
-.s-invite .glass{background:linear-gradient(155deg,#ffffff 0%,#FFFDF9 65%,#FFF7EE 100%)!important;border:1px solid rgba(212,168,56,.6)!important;box-shadow:0 24px 60px rgba(70,10,0,.35),inset 0 1px 0 #ffffff,inset 0 -1px 0 rgba(212,168,56,.2)!important;color:var(--red)!important;border-radius:24px;padding:clamp(16px,2.6vh,26px) 20px;gap:clamp(6px,1.2vh,12px);width:calc(100% - 32px)}
+.s-invite{flex-direction:column;justify-content:center;align-items:center;gap:clamp(8px,1.6vh,16px)}
+.s-invite .glass{background:linear-gradient(155deg,#ffffff 0%,#FFFDF9 65%,#FFF7EE 100%)!important;border:1px solid rgba(212,168,56,.6)!important;box-shadow:0 24px 60px rgba(70,10,0,.35),inset 0 1px 0 #ffffff,inset 0 -1px 0 rgba(212,168,56,.2)!important;color:var(--red)!important;border-radius:24px;padding:clamp(22px,3.4vh,34px) 22px;gap:clamp(8px,1.5vh,14px);width:calc(100% - 32px)}
 
 /* ---------- calendar sheet ---------- */
 .sheet{position:absolute;inset:0;z-index:80;display:none;align-items:flex-end;background:rgba(43,8,2,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
@@ -254,7 +265,7 @@ body{background:#1c0401;color:var(--red);font-family:var(--serif);overflow:hidde
   </section>
 
   <!-- 1 · Invitation (First slide when envelope opens) -->
-  <section class="slide t-red s1 s-invite has-art" data-theme="red" aria-label="Invitation">
+  <section class="slide t-red s1 s-invite" data-theme="red" aria-label="Invitation">
     <div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="ganesh-top rv" style="--d:.15s">
       <div class="ganesh-line1 deva" lang="hi">॥ श्री गणेशाय नमः ॥</div>
@@ -266,7 +277,6 @@ body{background:#1c0401;color:var(--red);font-family:var(--serif);overflow:hidde
       <h2 class="names rv z" style="--d:.5s">Shubham &amp; Rashmi</h2>
       <p class="lead rv" style="--d:.65s">and shower your blessings as they embark on a new chapter of their lives together.</p>
     </div>
-    <img class="art" src="https://raw.githubusercontent.com/pariflex1/ceremony/refs/heads/main/images/indian_ring_watercolor_cutout.webp" width="2016" height="1040" alt="Hands exchanging an engagement ring" loading="lazy">
   </section>
 
   <!-- 2 · Save the Date (white + countdown) -->
