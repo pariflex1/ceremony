@@ -44,12 +44,14 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{background:#1c0401;color:var(--red);font-family:var(--serif);overflow:hidden;display:grid;place-items:center;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
-.deck{position:relative;width:min(100%,480px);height:100vh;height:100dvh;max-height:940px;overflow:hidden;background:#3a0700;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.deck{position:relative;width:min(100%,480px);height:100vh;height:100dvh;max-height:940px;overflow:hidden;background:#3a0700;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;perspective:1800px;perspective-origin:50% 50%}
 @media(min-width:520px) and (min-height:720px){.deck{height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:28px;box-shadow:0 30px 100px rgba(0,0,0,.6)}}
 
 /* ---------- slides ---------- */
 .slide{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;overflow:hidden;will-change:transform,opacity,clip-path}
 .slide.show{display:flex}
+.slide{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.page-shade{position:absolute;inset:0;z-index:60;pointer-events:none;opacity:0;background:linear-gradient(90deg,rgba(0,0,0,.6),rgba(0,0,0,.08) 38%,rgba(0,0,0,.32))}
 .t-cream{background:linear-gradient(160deg,#FFFAD9 0%,#FFE8B6 46%,#FFC7A6 100%);color:var(--red);--b1:#ff8a3d;--b2:#e0482b;--b3:#ffd37a}
 .t-white{background:linear-gradient(160deg,#ffffff 0%,#FFF5E6 55%,#FFE6D2 100%);color:var(--red);--b1:#ffb199;--b2:#ffd9a0;--b3:#ffc0c8}
 .t-red{background:linear-gradient(160deg,#5c0a00 0%,#AB1800 48%,#D9461F 100%);color:var(--cream);--b1:#ff7a45;--b2:#7a0d00;--b3:#ff9eb1}
@@ -541,7 +543,7 @@ body{background:#1c0401;color:var(--red);font-family:var(--serif);overflow:hidde
     if (idx + 1 === cur) next();
   });
 
-  /* ================= random slide transitions ================= */
+  /* ================= book page slide transition ================= */
   function anim(el, frames, ms, extra) { return el.animate(frames, Object.assign({ duration: ms || T, easing: EASE, fill: 'both' }, extra || {})); }
   function clip(el, a, b) { return anim(el, [{ clipPath: a, webkitClipPath: a }, { clipPath: b, webkitClipPath: b }]); }
   function pickOrigin() { return ['50% 50%', '50% 100%', '0% 0%', '100% 100%', '50% 0%', '100% 0%', '0% 100%'][(Math.random() * 7) | 0]; }
@@ -558,10 +560,40 @@ body{background:#1c0401;color:var(--red);font-family:var(--serif);overflow:hidde
     blur: function (to, from) { return [anim(to, [{ filter: 'blur(22px)', opacity: 0, transform: 'scale(1.06)' }, { filter: 'blur(0)', opacity: 1, transform: 'scale(1)' }]), anim(from, [{ filter: 'blur(0)', opacity: 1 }, { filter: 'blur(22px)', opacity: 0 }])]; },
     spiral: function (to, from) { return [anim(to, [{ transform: 'rotate(-14deg) scale(.55)', opacity: 0 }, { transform: 'rotate(0) scale(1)', opacity: 1 }]), anim(from, [{ transform: 'rotate(0) scale(1)', opacity: 1 }, { transform: 'rotate(10deg) scale(1.25)', opacity: 0 }])]; },
     fade: function (to) { return [anim(to, [{ opacity: 0 }, { opacity: 1 }], reduce ? 1 : 700)]; },
-    open: function (to) { return [anim(to, [{ opacity: 0, transform: 'scale(.9)', filter: 'blur(8px)' }, { opacity: 1, transform: 'scale(1)', filter: 'blur(0)' }], reduce ? 1 : 1000, { easing: 'cubic-bezier(.2,.7,.2,1)' })]; }
+    open: function (to) { return [anim(to, [{ opacity: 0, transform: 'scale(.9)', filter: 'blur(8px)' }, { opacity: 1, transform: 'scale(1)', filter: 'blur(0)' }], reduce ? 1 : 1000, { easing: 'cubic-bezier(.2,.7,.2,1)' })]; },
+    book: function (to, from, d) {
+      var ease = 'cubic-bezier(.45,.05,.2,1)';
+      function shade(el, peak) {
+        var sh = document.createElement('div');
+        sh.className = 'page-shade';
+        if (d < 0) sh.style.background = 'linear-gradient(270deg,rgba(0,0,0,.6),rgba(0,0,0,.08) 38%,rgba(0,0,0,.32))';
+        el.appendChild(sh);
+        var an = anim(sh, [{ opacity: 0 }, { opacity: peak, offset: .5 }, { opacity: 0 }], T, { easing: 'ease-in-out' });
+        function drop() { if (sh.parentNode) sh.parentNode.removeChild(sh); }
+        an.finished.then(drop, drop);
+        return an;
+      }
+      if (d > 0) {
+        return [
+          anim(from, [
+            { transform: 'rotateY(0deg)', transformOrigin: '0% 50%' },
+            { transform: 'rotateY(-92deg)', transformOrigin: '0% 50%' }
+          ], T, { easing: ease }),
+          anim(to, [{ opacity: .65, transform: 'scale(.95)' }, { opacity: 1, transform: 'scale(1)' }], T, { easing: ease }),
+          shade(from, reduce ? 0 : .9)
+        ];
+      }
+      return [
+        anim(to, [
+          { transform: 'rotateY(-88deg)', transformOrigin: '0% 50%' },
+          { transform: 'rotateY(0deg)', transformOrigin: '0% 50%' }
+        ], T, { easing: ease }),
+        anim(from, [{ opacity: 1, transform: 'scale(1)' }, { opacity: .65, transform: 'scale(.95)' }], T, { easing: ease }),
+        shade(to, reduce ? 0 : .9)
+      ];
+    }
   };
-  var RANDOM = ['circle', 'curtain', 'curtainV', 'wipe', 'slant', 'slideUp', 'slideSide', 'zoom', 'flip', 'blur', 'spiral'];
-  function pick() { if (reduce) return 'fade'; var c = RANDOM.filter(function (n) { return n !== lastFx; }); lastFx = c[(Math.random() * c.length) | 0]; return lastFx; }
+  function pick() { return reduce ? 'fade' : 'book'; }
 
   function go(n, opt) {
     if (busy || n === cur || n < 0 || n >= N) return false;
@@ -569,7 +601,9 @@ body{background:#1c0401;color:var(--red);font-family:var(--serif);overflow:hidde
     if (n === 0 && !(opt && opt.fx)) return false;
     var from = slides[cur], to = slides[n], dir = n > cur ? 1 : -1, name = (opt && opt.fx) || pick(), ms = (name === 'open' ? 1000 : name === 'fade' ? 700 : T);
     busy = true; cur = n; if (n > 0) moved = n > 1 || moved;
-    to.classList.add('show'); to.style.zIndex = 3; from.style.zIndex = 2;
+    to.classList.add('show');
+    if (name === 'book' && dir > 0) { from.style.zIndex = 3; to.style.zIndex = 2; }
+    else { to.style.zIndex = 3; from.style.zIndex = 2; }
     (function attachFx() {
       var cv = $('fx');
       if (cv && to) {
